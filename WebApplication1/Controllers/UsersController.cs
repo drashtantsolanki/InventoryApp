@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : Controller
     {
         #region Constructor & Readonly property
         private readonly IUserRepository _userRepository;
@@ -87,8 +87,6 @@ namespace WebApplication1.Controllers
         }
         #endregion
 
-
-
         /// <summary>
         /// this will fetch users according to delete flag
         /// delete flag values 0=all users with deleted, 1=not deleted users only, 2=deleted users only
@@ -109,6 +107,91 @@ namespace WebApplication1.Controllers
             catch (Exception ex)
             {
                 return JsonConvert.SerializeObject(new ResponseDto { Status = false, Result = null, Error = ex.Message.ToString() });
+                throw;
+            }
+        }
+        #endregion
+
+        #region UserById
+        [HttpGet("{userId}")]
+        [Route("userById/{userId}")]
+        public string getUserById(int userId)
+        {
+            try
+            {
+                var response = new ResponseDto
+                {
+                    Status = true,
+                    Error = "",
+                    Result = _userRepository.GetUserById(userId)
+                };
+                return JsonConvert.SerializeObject(response);
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(ex.Message.ToString());
+                throw;
+            }
+        }
+        #endregion
+
+        #region UpdateUser
+        [HttpPut]
+        [Route("Update")]
+        public string UpdateUser(UpdateUserDto user)
+        {
+            try
+            {
+                bool result = _userRepository.ModifyUser(user.Id, user.Email, user.Username, user.UpdatedBy);
+                var response = new ResponseDto();
+                if (result)
+                {
+                    response.Status = true;
+                    response.Result = result;
+                    response.Error = "";
+                }
+                else
+                {
+                    response.Status = false;
+                    response.Result = result;
+                    response.Error = "Something went wrong";
+                }
+                return JsonConvert.SerializeObject(response);
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(ex.Message.ToString());
+                throw;
+            }
+        }
+        #endregion
+
+        #region DeleteUser
+        [HttpDelete]
+        [Route("delete")]
+        public string deleteUser(DeleteDto deleteObj)
+        {
+            try
+            {
+                bool result = _userRepository.DeleteUser(deleteObj.Id, deleteObj.DeletedBy, deleteObj.IsDeleted);
+                var response = new ResponseDto();
+                if (result)
+                {
+                    response.Status = true;
+                    response.Result = result;
+                    response.Error = "";
+                }
+                else
+                {
+                    response.Status = false;
+                    response.Result = result;
+                    response.Error = "Something went wrong";
+                }
+                return JsonConvert.SerializeObject(response);
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(ex.Message.ToString());
                 throw;
             }
         } 

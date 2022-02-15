@@ -13,9 +13,9 @@ namespace Inventory.DAL
         public bool Registration(string username, string email, string password, int createdBy = 0);
         public DataTable Login(string username, string password);
         public DataTable GetUsers(int deleteflag=0);
-        //public Users GetUserById(int userId);
-        //public bool ModifyUser(int userId);
-        //public bool DeleteUser(int userId);
+        public DataTable GetUserById(int userId);
+        public bool ModifyUser(int userId,string email,string username,int updatedBy);
+        public bool DeleteUser(int userId,int deletedBy, bool isDeleted);
 
     }
 }

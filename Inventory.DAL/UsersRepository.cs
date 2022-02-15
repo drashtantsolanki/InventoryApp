@@ -13,8 +13,21 @@ namespace Inventory.DAL
 {
     public class UsersRepository : IUserRepository
     {
+        #region Private Methods And Properties
         private string connectionString = ConnectionString.Value;
-        //private string connectionString = "";
+        private string Encryption(string password)
+        {
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            byte[] passBytes = Encoding.UTF8.GetBytes(password);
+            passBytes = md5.ComputeHash(passBytes);
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (byte ba in passBytes)
+            {
+                stringBuilder.Append(ba.ToString());
+            }
+            return stringBuilder.ToString();
+        }
+        #endregion
 
         #region LOGIN
         public DataTable Login(string username, string password)
@@ -126,22 +139,115 @@ namespace Inventory.DAL
                 throw;
             }
 
+        }
+        #endregion
+
+        #region GetUserById
+        public DataTable GetUserById(int userId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("sp_getUserById", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@userId", userId);
+                        DataSet dataSet = new DataSet();
+                        SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+                        connection.Open();
+                        int result = dataAdapter.Fill(dataSet);
+                        connection.Close();
+                        if (result > 0 && dataSet.Tables[0].Rows.Count > 0)
+                        {
+                            return dataSet.Tables[0];
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogging.ExceptionLogging.WriteException(ex);
+                throw;
+            }
+        }
+        #endregion
+
+        #region ModifyUser
+        public bool ModifyUser(int userId, string email, string username, int updatedBy)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("sp_updateUserById", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@userId", userId);
+                        command.Parameters.AddWithValue("@Email", email);
+                        command.Parameters.AddWithValue("@username", username);
+                        command.Parameters.AddWithValue("@updateBy", updatedBy);
+                        connection.Open();
+                        int result = command.ExecuteNonQuery();
+                        connection.Close();
+                        if (result > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogging.ExceptionLogging.WriteException(ex);
+                throw;
+            }
+        }
+        #endregion
+
+        #region DeleteUser
+        public bool DeleteUser(int userId, int deletedBy, bool isDeleted)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("sp_deleteUser", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@userId", userId);
+                        command.Parameters.AddWithValue("@isDelete", isDeleted);
+                        command.Parameters.AddWithValue("@deletedBy", deletedBy);
+                        connection.Open();
+                        int result = command.ExecuteNonQuery();
+                        connection.Close();
+                        if (result > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogging.ExceptionLogging.WriteException(ex);
+                throw;
+            }
         } 
         #endregion
 
-        #region Private Methods
-        private string Encryption(string password)
-        {
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-            byte[] passBytes = Encoding.UTF8.GetBytes(password);
-            passBytes = md5.ComputeHash(passBytes);
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (byte ba in passBytes)
-            {
-                stringBuilder.Append(ba.ToString());
-            }
-            return stringBuilder.ToString();
-        } 
-        #endregion
     }
 }
