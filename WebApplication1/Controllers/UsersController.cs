@@ -56,7 +56,6 @@ namespace WebApplication1.Controllers
         }
         #endregion
 
-
         #region LOGIN
         [AllowAnonymous]
         [HttpPost]
