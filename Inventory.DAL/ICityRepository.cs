@@ -8,7 +8,7 @@ namespace Inventory.DAL
 {
     public interface ICityRepository
     {
-        public string AddState(string name,int stateId, int countryId, int createdBy);
+        public string AddCity(string name,int stateId, int countryId, int createdBy);
         public string GetCities(int deleteFlag = 0);
         public string GetCityId(int cityId);
         public string ModifyCity(int cityId, int stateId, int countryId, string cityName, int updatedBy);

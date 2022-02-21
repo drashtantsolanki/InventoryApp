@@ -10,7 +10,7 @@ namespace WebApplication1.DTOs
         public int Id { get; set; }
         public string CityName { get; set; }
         public int CountryId { get; set; }
-        public string StateId { get; set; }
+        public int StateId { get; set; }
         public int? CreatedBy { get; set; }
         public int? UpdatedBy { get; set; }
         public int? DeletedBy { get; set; }

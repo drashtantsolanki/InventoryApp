@@ -16,8 +16,8 @@ namespace Inventory.DAL
         private readonly string connectionString = ConnectionString.Value;
         #endregion
 
-        #region Add State
-        public string AddState(string name, int stateId, int countryId, int createdBy)
+        #region Add City
+        public string AddCity(string name, int stateId, int countryId, int createdBy)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Inventory.DAL
                         }
                         else
                         {
-                            return JsonConvert.SerializeObject(new ApiResponse { status = false, Data = "", Error = "Something went wrong." }); ;
+                            return JsonConvert.SerializeObject(new ApiResponse { status = false, Data = "", Error = "" }); ;
                         }
 
                     }

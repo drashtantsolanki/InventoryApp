@@ -76,6 +76,7 @@ namespace WebApplication1
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IStateRepository, StateRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
 
         }
 
