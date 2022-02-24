@@ -15,5 +15,12 @@ namespace Inventory.DAL.Extensions
             Regex regex = new Regex(gstRegexPattern);
             return regex.IsMatch(gstnumber);
         }
+
+        public bool ValidatePan(string strPan)
+        {
+            string panRegexPattern = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
+            Regex regex = new Regex(panRegexPattern);
+            return regex.IsMatch(strPan);
+        }
     }
 }

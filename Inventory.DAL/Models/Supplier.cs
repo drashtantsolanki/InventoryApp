@@ -14,6 +14,7 @@ namespace Inventory.DAL.Models
         public string Code { get; set; }
         public string EmailId { get; set; }
         public string GSTNo { get; set; }
+        public string PAN { get; set; }
         public string Address { get; set; }
         public int CityId { get; set; }
         public int StateId { get; set; }

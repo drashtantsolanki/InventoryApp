@@ -18,6 +18,7 @@ using System.Text;
 using Inventory.DAL.Models;
 using WebApplication1.Controllers;
 using Inventory.DAL;
+using Inventory.DAL.Extensions;
 
 namespace WebApplication1
 {

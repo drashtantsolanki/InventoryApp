@@ -20,7 +20,6 @@ namespace WebApplication1.Controllers
             _supplierRepository = supplierRepository;
         }
 
-
         [HttpPost]
         [Route("addSupploer")]
         public string addSupplier(Supplier supplier)
@@ -28,6 +27,67 @@ namespace WebApplication1.Controllers
             try
             {
                 return _supplierRepository.AddSupplier(supplier);
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(ex.Message.ToString());
+                throw;
+            }
+        }
+
+
+        [HttpGet("{deleteFlag}")]
+        [Route("GetSuppliers/{deleteFlag}")]
+        public string GetSuppliers(int deleteFlag)
+        {
+            try
+            {
+                return _supplierRepository.GetSuppliers(deleteFlag);
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(ex.Message.ToString());
+                throw;
+            }
+        }
+
+        [HttpGet("{supplierId}")]
+        [Route("GetSupplierById/{supplierId}")]
+        public string GetSupplierById(int supplierId)
+        {
+            try
+            {
+                return _supplierRepository.GetSupplierById(supplierId);
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(ex.Message.ToString());
+                throw;
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateSupplier")]
+        public string UpdateSupplier(Supplier supplier)
+        {
+            try
+            {
+                return _supplierRepository.ModifySupplier(supplier);
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(ex.Message.ToString());
+                throw;
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteSupplier")]
+        public string DeleteSupplier(Supplier supplier)
+        {
+            try
+            {
+                return _supplierRepository.DeleteSupplier(supplier.Id, Convert.ToInt32(supplier.DeletedBy), Convert.ToBoolean(supplier.IsDeleted));
             }
             catch (Exception ex)
             {
